@@ -22,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="2"
-            android:text="start"
+            android:text="@string/start"
             android:textSize="25sp" />
 
         <Button
@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="2"
-            android:text="stop"
+            android:text="@string/stop"
             android:textSize="25sp" />
 
     </LinearLayout>
@@ -40,7 +40,7 @@
         android:id="@+id/resetButton"
         android:layout_width="120dp"
         android:layout_height="60dp"
-        android:text="reset"
+        android:text="@string/reset"
         android:textSize="25sp" />
 
 </LinearLayout>

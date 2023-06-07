@@ -16,13 +16,13 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:layout_weight="1"
-            android:text="Exercise name:" />
+            android:text="@string/exercise_name" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Weight(lbs/kg):" />
+            android:text="@string/weight_lbs_kg" />
     </LinearLayout>
 
     <LinearLayout
@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Bench press"
+            android:hint="@string/bench_press"
             android:inputType="text"
             android:textAlignment="center" />
 
@@ -44,7 +44,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="110"
+            android:hint="@string/weight_hint"
             android:inputType="number"
             android:textAlignment="center" />
 
@@ -59,13 +59,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="repetitions:" />
+            android:text="@string/repetitions" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Date(year-month-day):" />
+            android:text="@string/date_year_month_day" />
 
     </LinearLayout>
 
@@ -80,7 +80,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="19"
-            android:hint="8"
+            android:hint="@string/repetitions_hint"
             android:inputType="number"
             android:textAlignment="center" />
 
@@ -99,14 +99,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Add a note" />
+        android:text="@string/add_a_note" />
 
     <TextView
         android:id="@+id/hasEmptyFieldTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Has empty field(s)!"
+        android:text="@string/has_empty_field_s"
         android:textColor="@color/error"
         android:visibility="gone" />
 

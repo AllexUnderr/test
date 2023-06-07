@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">test</string>
+    <string name="exercise_name">Exercise name:</string>
+    <string name="weight_lbs_kg">Weight(lbs/kg):</string>
+    <string name="bench_press">Bench press</string>
+    <string name="weight_hint">110</string>
+    <string name="repetitions">Repetitions:</string>
+    <string name="date_year_month_day">Date(year-month-day):</string>
+    <string name="repetitions_hint">8</string>
+    <string name="add_a_note">Add a note</string>
+    <string name="has_empty_field_s">Has empty field(s)!</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="reset">Reset</string>
+    <string name="exercise">Exercise:</string>
+    <string name="weight">Weight:</string>
+    <string name="date">Date:</string>
 </resources>
