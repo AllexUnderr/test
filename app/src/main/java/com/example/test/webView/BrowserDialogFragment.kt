@@ -1,5 +1,6 @@
 package com.example.test.webView
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +10,14 @@ import android.webkit.WebViewClient
 import androidx.fragment.app.DialogFragment
 import com.example.test.R
 import com.example.test.databinding.FragmentWebviewBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class WebViewDialogFragment : DialogFragment() {
+class BrowserDialogFragment : DialogFragment() {
 
     private var _binding: FragmentWebviewBinding? = null
     private val binding: FragmentWebviewBinding get() = requireNotNull(_binding)
+
+    private val viewModel: BrowserViewModel by viewModel()
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -40,17 +44,30 @@ class WebViewDialogFragment : DialogFragment() {
 
         binding.webView.webViewClient = WebViewClient()
 
+        setUrlResultListener()
+
         if (savedInstanceState != null)
             binding.webView.restoreState(savedInstanceState)
         else
-            binding.webView.loadUrl("https://youtube.com")
+            viewModel.url.observe(viewLifecycleOwner) {
+                binding.webView.loadUrl(it)
+            }
 
         CookieManager.getInstance().setAcceptCookie(true)
         setWebViewSettings()
     }
 
+    private fun setUrlResultListener() {
+        parentFragmentManager.setFragmentResultListener(REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
+            viewModel.setUrl(
+                bundle.getString(TAG) ?: ""
+            )
+        }
+    }
+
     private fun setWebViewSettings() {
         with(binding.webView) {
+            @SuppressLint("SetJavaScriptEnabled")
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
             settings.javaScriptCanOpenWindowsAutomatically = true
@@ -64,6 +81,8 @@ class WebViewDialogFragment : DialogFragment() {
     }
 
     companion object {
-        const val TAG = "WebViewDialogFragment"
+        const val REQUEST_KEY = "url"
+
+        const val TAG = "BrowserDialogFragment"
     }
 }
