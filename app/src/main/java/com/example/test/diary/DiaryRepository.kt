@@ -7,7 +7,7 @@ import com.example.test.diary.model.database.DiaryDao
 class DiaryRepository(private val diaryDao: DiaryDao) {
 
     suspend fun saveExercise(exercise: Exercise): Boolean {
-        if (hasEmptyField(exercise))
+        if (!isFieldsValid(exercise))
             return false
 
         diaryDao.insertExercise(
@@ -20,8 +20,14 @@ class DiaryRepository(private val diaryDao: DiaryDao) {
     suspend fun getExercises(): List<Exercise> =
         diaryDao.getExercises().convertEntityListToModel()
 
+    private fun isFieldsValid(exercise: Exercise): Boolean {
+        if (hasEmptyField(exercise)) return false
+
+        return exercise.weight >= 0 && exercise.repetition > 0
+    }
+
     private fun hasEmptyField(exercise: Exercise) =
-        exercise.name.trim().isBlank() || exercise.weight == 0 || exercise.repetition == 0
+        exercise.name.trim().isBlank() || exercise.repetition == 0
 
     private fun convertModelToEntity(exercise: Exercise): ExerciseEntity =
         ExerciseEntity(

@@ -37,14 +37,22 @@ class StopwatchFragment : Fragment() {
 
     private fun initViews() {
         var difference = 0L
+        var isChronometerRunning = false
+
         binding.startButton.setOnClickListener {
-            binding.stopwatchChronometer.base = difference + SystemClock.elapsedRealtime()
-            binding.stopwatchChronometer.start()
+            if (!isChronometerRunning) {
+                binding.stopwatchChronometer.base = difference + SystemClock.elapsedRealtime()
+                binding.stopwatchChronometer.start()
+            }
+            isChronometerRunning = true
         }
 
         binding.stopButton.setOnClickListener {
-            binding.stopwatchChronometer.stop()
-            difference = binding.stopwatchChronometer.base - SystemClock.elapsedRealtime()
+            if (isChronometerRunning) {
+                binding.stopwatchChronometer.stop()
+                difference = binding.stopwatchChronometer.base - SystemClock.elapsedRealtime()
+            }
+            isChronometerRunning = false
         }
 
         binding.resetButton.setOnClickListener {
