@@ -7,6 +7,7 @@ import androidx.fragment.app.commit
 import com.example.test.R
 import com.example.test.databinding.ActivityMainBinding
 import com.example.test.diary.DiaryFragment
+import com.example.test.network.ErrorDialogFragment
 import com.example.test.stopwatch.StopwatchFragment
 import com.example.test.webView.BrowserDialogFragment
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -66,6 +67,11 @@ class MainActivity : FragmentActivity() {
                 bundleOf(BrowserDialogFragment.TAG to it)
             )
             BrowserDialogFragment().show(supportFragmentManager, BrowserDialogFragment.TAG)
+        }
+
+        viewModel.showErrorPageCommand.observe(this) {
+            if (it)
+                ErrorDialogFragment().show(supportFragmentManager, ErrorDialogFragment.TAG)
         }
     }
 }

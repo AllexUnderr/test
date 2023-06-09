@@ -5,11 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.test.core.BaseViewModel
 import com.example.test.helper.SingleLiveEvent
+import com.example.test.network.Connection
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val repository: MainRepository) : BaseViewModel() {
+class MainViewModel(
+    private val repository: MainRepository,
+    private val connection: Connection
+) : BaseViewModel() {
 
     val openUrlCommand = SingleLiveEvent<Boolean>()
+
+    val showErrorPageCommand: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     private val _url: MutableLiveData<String> = MutableLiveData()
     val url: LiveData<String> = _url
@@ -17,15 +23,31 @@ class MainViewModel(private val repository: MainRepository) : BaseViewModel() {
     fun init() {
         if (!repository.isEmulator()) {
             viewModelScope.launch {
-                repository.getUrl().collect {
-                    if (it.isNotBlank())
-                        _url.value = it
-                    else
-                        openUrlCommand.value = false
+                try {
+                    collectUrl()
+                } catch (e: Exception) {
+                    showErrorPageCommand.value = true
+                    processError(e)
                 }
             }
         } else {
             openUrlCommand.value = false
         }
+    }
+
+    private suspend fun collectUrl() {
+        repository.getUrl().collect {
+            if (connection.isInternetAvailable())
+                setUrl(it)
+            else
+                showErrorPageCommand.value = true
+        }
+    }
+
+    private fun setUrl(urlToSet: String) {
+        if (urlToSet.isNotBlank())
+            _url.value = urlToSet
+        else
+            openUrlCommand.value = false
     }
 }
