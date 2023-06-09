@@ -8,6 +8,7 @@ import com.example.test.diary.DiaryRepository
 import com.example.test.diary.DiaryViewModel
 import com.example.test.diary.model.database.DiaryDao
 import com.example.test.helper.AppDatabase
+import com.example.test.network.Connection
 import com.example.test.ui.MainRepository
 import com.example.test.ui.MainViewModel
 import com.example.test.webView.BrowserViewModel
@@ -25,6 +26,7 @@ val appModule = module {
 
     singleOf(::DiaryRepository)
     singleOf(::MainRepository)
+    singleOf(::Connection)
 
     viewModelOf(::DiaryViewModel)
     viewModelOf(::MainViewModel)
