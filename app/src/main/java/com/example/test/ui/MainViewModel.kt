@@ -13,7 +13,7 @@ class MainViewModel(
     private val connection: Connection
 ) : BaseViewModel() {
 
-    val openUrlCommand = SingleLiveEvent<Boolean>()
+    val openPlugCommand = SingleLiveEvent<Boolean>()
 
     val showErrorPageCommand: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
@@ -21,33 +21,37 @@ class MainViewModel(
     val url: LiveData<String> = _url
 
     fun init() {
-        if (!repository.isEmulator()) {
-            viewModelScope.launch {
-                try {
-                    collectUrl()
-                } catch (e: Exception) {
-                    showErrorPageCommand.value = true
-                    processError(e)
+        viewModelScope.launch {
+            repository.savedUrl.collect {
+
+                if (it.isNotBlank()) {
+                    openUrl(it)
+                } else {
+                    try {
+                        saveRemoteUrl()
+                    } catch (e: Exception) {
+                        showErrorPageCommand.value = true
+                        processError(e)
+                    }
                 }
             }
-        } else {
-            openUrlCommand.value = false
         }
     }
 
-    private suspend fun collectUrl() {
-        repository.getUrl().collect {
-            if (connection.isInternetAvailable())
-                setUrl(it)
-            else
-                showErrorPageCommand.value = true
-        }
-    }
-
-    private fun setUrl(urlToSet: String) {
-        if (urlToSet.isNotBlank())
-            _url.value = urlToSet
+    private fun openUrl(url: String) {
+        if (connection.isInternetAvailable())
+            _url.value = url
         else
-            openUrlCommand.value = false
+            showErrorPageCommand.value = true
+    }
+
+    private suspend fun saveRemoteUrl() {
+        val urlToSave = repository.getRemoteUrl()
+        if (urlToSave.isBlank() || repository.isEmulator()) {
+            openPlugCommand.value = true
+        } else {
+            repository.saveUrl(urlToSave)
+            _url.value = urlToSave
+        }
     }
 }

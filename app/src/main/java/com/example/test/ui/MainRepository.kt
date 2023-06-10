@@ -16,27 +16,15 @@ class MainRepository(private val context: Context) {
 
     private val urlKey = stringPreferencesKey("url")
 
-    private val url: Flow<String> = context.dataStore.data.map { it[urlKey] ?: "" }
+    val savedUrl: Flow<String> = context.dataStore.data.map { it[urlKey] ?: "" }
 
-    suspend fun getUrl(): Flow<String> =
-        url.map {
-            if (it.isBlank()) {
-                val urlToSave = getRemoteUrl()
-                saveUrl(urlToSave)
-
-                urlToSave
-            } else {
-                it
-            }
-        }
-
-    private suspend fun saveUrl(url: String) {
+    suspend fun saveUrl(url: String) {
         context.dataStore.edit {
             it[urlKey] = url
         }
     }
 
-    private fun getRemoteUrl(): String =
+    fun getRemoteUrl(): String =
         Firebase.remoteConfig.getString("url")
 
     fun isEmulator(): Boolean {

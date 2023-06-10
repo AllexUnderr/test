@@ -52,8 +52,8 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun bindViewModel() {
-        viewModel.openUrlCommand.observe(this) {
-            if (!it) {
+        viewModel.openPlugCommand.observe(this) {
+            if (it) {
                 supportFragmentManager.commit {
                     add(binding.stopwatchFragmentContainerView.id, StopwatchFragment())
                     add(binding.trainingDiaryFragmentContainerView.id, DiaryFragment())
