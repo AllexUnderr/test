@@ -11,7 +11,7 @@ import com.example.test.helper.AppDatabase
 import com.example.test.network.Connection
 import com.example.test.ui.MainRepository
 import com.example.test.ui.MainViewModel
-import com.example.test.webView.BrowserViewModel
+import com.example.test.browser.BrowserViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module

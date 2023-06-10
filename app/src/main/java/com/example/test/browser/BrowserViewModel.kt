@@ -1,4 +1,4 @@
-package com.example.test.webView
+package com.example.test.browser
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

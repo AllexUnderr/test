@@ -9,7 +9,7 @@ import com.example.test.databinding.ActivityMainBinding
 import com.example.test.diary.DiaryFragment
 import com.example.test.network.ErrorDialogFragment
 import com.example.test.stopwatch.StopwatchFragment
-import com.example.test.webView.BrowserDialogFragment
+import com.example.test.browser.BrowserDialogFragment
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase

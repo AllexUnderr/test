@@ -1,4 +1,4 @@
-package com.example.test.webView
+package com.example.test.browser
 
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
