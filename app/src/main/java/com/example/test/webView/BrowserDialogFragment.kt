@@ -1,12 +1,16 @@
 package com.example.test.webView
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.CookieManager
+import android.webkit.WebChromeClient
+import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.ComponentDialog
 import androidx.fragment.app.DialogFragment
 import com.example.test.R
 import com.example.test.databinding.FragmentWebviewBinding
@@ -19,10 +23,24 @@ class BrowserDialogFragment : DialogFragment() {
 
     private val viewModel: BrowserViewModel by viewModel()
 
+    private var webView: WebView? = null
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
         binding.webView.saveState(outState)
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return object : ComponentDialog(requireContext(), theme) {
+            override fun onBackPressed() {
+                if (false)
+                    super.onBackPressed()
+
+                if (webView?.canGoBack() == true)
+                    webView?.goBack()
+            }
+        }
     }
 
     override fun getTheme(): Int {
@@ -42,9 +60,23 @@ class BrowserDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.webView.webViewClient = WebViewClient()
-
         setUrlResultListener()
+
+        webView = binding.webView
+        webView?.webViewClient = WebViewClient()
+        webView?.webChromeClient = WebChromeClient()
+        val webSettings = binding.webView.settings
+        webSettings.apply {
+            @SuppressLint("SetJavaScriptEnabled")
+            javaScriptEnabled = true
+            loadWithOverviewMode = true
+            useWideViewPort = true
+            domStorageEnabled = true
+            databaseEnabled = true
+            setSupportZoom(true)
+            allowFileAccess = true
+            allowContentAccess = true
+        }
 
         if (savedInstanceState != null)
             binding.webView.restoreState(savedInstanceState)
@@ -53,8 +85,12 @@ class BrowserDialogFragment : DialogFragment() {
                 binding.webView.loadUrl(it)
             }
 
+        webSettings.apply {
+            domStorageEnabled = true
+            javaScriptCanOpenWindowsAutomatically = true
+        }
+
         CookieManager.getInstance().setAcceptCookie(true)
-        setWebViewSettings()
     }
 
     private fun setUrlResultListener() {
@@ -62,21 +98,6 @@ class BrowserDialogFragment : DialogFragment() {
             viewModel.setUrl(
                 bundle.getString(TAG) ?: ""
             )
-        }
-    }
-
-    private fun setWebViewSettings() {
-        with(binding.webView) {
-            @SuppressLint("SetJavaScriptEnabled")
-            settings.javaScriptEnabled = true
-            settings.domStorageEnabled = true
-            settings.javaScriptCanOpenWindowsAutomatically = true
-            settings.loadWithOverviewMode = true
-            settings.useWideViewPort = true
-            settings.databaseEnabled = true
-            settings.setSupportZoom(false)
-            settings.allowFileAccess = true
-            settings.allowContentAccess = true
         }
     }
 
